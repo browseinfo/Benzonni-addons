@@ -1,0 +1,33 @@
+.header{
+    height:auto; 
+    float:left;
+}
+.header_txt{
+    text-align: left;
+    font-size: 16px;
+}
+.header_txt1{
+    text-align: right;
+    font-size: 16px;
+}
+.address{
+    text-align: left;
+    font-size: 16px;
+}
+.txt{
+    font-size: 16px;
+}
+.main_border{
+    border-left:2px solid;
+    border-right:2px solid;
+    border-top:2px solid;
+    border-bottom:2px solid;
+}
+.main_border1{
+    border-left:2px solid;
+    border-right:2px solid;
+    border-bottom:2px solid;
+}
+.l_border{
+    border-left:2px solid;
+}

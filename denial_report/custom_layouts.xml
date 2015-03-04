@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="layout" inherit_id="web.layout" primary="True">
+    <!-- Add report attributes -->
+    <xpath expr="//html" position="attributes">
+        <attribute name="t-att-data-report-margin-top">data_report_margin_top if data_report_margin_top else None</attribute>
+        <attribute name="t-att-data-report-header-spacing">data_report_header_spacing if data_report_header_spacing else None</attribute>
+        <attribute name="t-att-data-report-dpi">data_report_dpi if data_report_dpi else None</attribute>
+    </xpath>
+    <!-- Add report style -->
+    <xpath expr="//head" position="inside">
+        <link href="/web/static/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+        <link href="/website/static/src/css/website.css" rel="stylesheet"/>
+        <link href="/web/static/lib/fontawesome/css/font-awesome.css" rel="stylesheet"/>
+        <style type="text/css">
+            <t t-call="report.style"/>
+        </style>
+    </xpath>
+    <!-- Remove conflicting style -->
+    <xpath expr="//head/link[@href='/web/static/src/css/full.css']" position="replace"></xpath>
+</template>
+
+<template id="html_container">
+    <t t-set="body_classname" t-value="'container'"/>
+    <t t-call="denial_report.layout">
+        <t t-raw="0"/>
+    </t>
+</template>
+
+<template id="style">
+    body {
+        color: #000 !important;
+    }
+    .border-black td {
+        border-top: 1px solid black !important;
+    }
+    .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+    }
+    .zero_min_height {
+        min-height: 0px !important;
+    }
+</template>
+
+<template id="report.custom_external_layout">
+	<!-- Multicompany -->
+    <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id"></t>
+    </t>
+    <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"></t>
+    </t>
+
+    <t t-call="denial_report.external_custom_layout_header" />
+    <t t-raw="0" />
+    <t t-call="denial_report.external_custom_layout_footer" />
+</template>
+
+<template id="external_custom_layout_header">
+    <div class="header">
+        <t t-foreach="docs" t-as="o">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img id="full-screen-background-image" style="width:200px; height:75px;" alt="full screen background image" src="/denial_report/static/src/img/benzzoni.png"/>
+                </div>
+                <div class="col-xs-4">
+                    <table width="100%" class="txt">
+                        <tr><td style="font-size:20px"><b>Benzzoni Pte Ltd</b></td></tr>
+                        <tr><td>47 Kallang Pudding Road,</td></tr>
+                        <tr><td>#08-04 The Crescent @ Kallang,</td></tr>
+                        <tr><td>Singapore 349318</td></tr>
+                        <tr><td>Tel: +65 9818 9555</td></tr>
+                        <tr><td>Email: sales@benzzoni.com.sg</td></tr>
+                        <tr><td style="color:blue">www.benzzoni.com</td></tr>
+                    </table>
+                </div>
+                <div class="col-xs-1"></div>
+                <div class="col-xs-4">
+                    <p style="text-align:right;font-size:24px"><b>Commercial Invoice</b></p>
+                    <p style="text-align:right;font-size:16px">GST Reg. Number: 201301927D</p><br/>
+                    <table width="100%" class="header_txt1">
+                        <tr>
+                            <td>Invoice No.</td>
+                            <td> </td>
+                            <td><span t-field="o.number"/></td>
+                        </tr>
+                        <tr>
+                            <td>Deliver Order No.</td>
+                            <td> </td>
+                            <td><span t-esc="get_delivery_number(o.origin)"/></td>
+                        </tr>
+                        <tr>
+                            <td>PO / PI No.</td>
+                            <td> </td>
+                            <td><span t-field="o.origin"/></td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td> </td>
+                            <td><span t-esc="get_date(o.date_invoice)"/></td>
+                        </tr>
+                        <tr>
+                            <td>Credit Term</td>
+                            <td> </td>
+                            <td><span t-field="o.payment_term.name"/></td>
+                        </tr>
+                        <tr>
+                            <td>Page</td>
+                            <td> </td>
+                            <td><span class="page"/>of<span class="topage"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </div>
+</template>
+
+<template id="report.custom_external_layout1">
+	<!-- Multicompany -->
+    <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id"></t>
+    </t>
+    <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"></t>
+    </t>
+
+    <t t-call="denial_report.external_custom_layout_header1" />
+    <t t-raw="0" />
+    <t t-call="denial_report.external_custom_layout_footer" />
+</template>
+
+<template id="external_custom_layout_header1">
+    <div class="header">
+        <t t-foreach="docs" t-as="o">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img id="full-screen-background-image" style="width:200px; height:75px;" alt="full screen background image" src="/denial_report/static/src/img/benzzoni.png"/>
+                </div>
+                <div class="col-xs-4">
+                    <table width="100%" class="txt">
+                        <tr><td style="font-size:20px"><b>Benzzoni Pte Ltd</b></td></tr>
+                        <tr><td>47 Kallang Pudding Road,</td></tr>
+                        <tr><td>#08-04 The Crescent @ Kallang,</td></tr>
+                        <tr><td>Singapore 349318</td></tr>
+                        <tr><td>Tel: +65 9818 9555</td></tr>
+                        <tr><td>Email: sales@benzzoni.com.sg</td></tr>
+                        <tr><td style="color:blue">www.benzzoni.com</td></tr>
+                    </table>
+                </div>
+                <div class="col-xs-1"></div>
+                <div class="col-xs-4">
+                    <p style="text-align:right;font-size:28px"><b>Proforma Invoice</b></p>
+                    <p style="text-align:right;font-size:16px">GST Reg. Number: 201301927D</p><br/>
+                    <table width="100%" class="header_txt1">
+                   </table>
+                </div>
+            </div>
+        </t>
+    </div>
+</template>
+
+<template id="external_custom_layout_footer">
+    <div class="footer" style="height:900px;">
+	</div>
+</template>
+
+<template id="report.minimal_layout">
+    <t t-raw="'&lt;base href=%s&gt;' % base_url"/>
+    &lt;!DOCTYPE html&gt;
+    <html style="height: 0;">
+        <head>
+            <link href="/report/static/src/css/reset.min.css" rel="stylesheet"/>
+            <link href="/web/static/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+            <link href="/denial_report/static/src/css/style.css" rel="stylesheet"/>
+            <link href="/website/static/src/css/website.css" rel="stylesheet"/>
+            <link href="/web/static/lib/fontawesome/css/font-awesome.css" rel="stylesheet"/>
+            <style type='text/css'><t t-raw="css"/></style>
+            <t t-if="subst is True">
+                <script src='/report/static/src/js/subst.js'></script>
+            </t>
+        </head>
+        <body class="container" onload="subst()">
+            <t t-raw="body"/>
+        </body>
+    </html>
+</template>
+
+</data>
+</openerp>

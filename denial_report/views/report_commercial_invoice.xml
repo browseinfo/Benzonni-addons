@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <template id="report_commercial_invoice">
+        <t t-call="report.html_container">
+		    <t t-call="report.custom_external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <br/><br/><br/><br/>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <table width="100%">
+                                    <tr class="main_border txt">
+                                        <td >BILL TO:</td>
+                                    </tr>
+                                    <tr class="main_border1 txt">
+                                        <td><span t-field="o.partner_id"
+                                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                                            <p> TEL: <span t-if="o.partner_id.phone"><span t-field="o.partner_id.phone"/></span>
+                                                FAX: <span t-if="o.partner_id.fax"><span t-field="o.partner_id.fax"/></span></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-xs-6">
+                                <table width="100%">
+                                    <tr class="main_border txt">
+                                        <td >SHIP TO:</td>
+                                    </tr>
+                                    <tr class="main_border1 txt">
+                                        <td><span t-field="o.partner_id"
+                                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                                            <p> ATTN: <span t-if="o.partner_id.name"><span t-field="o.partner_id.name"/></span>
+                                                FAX: <span t-if="o.partner_id.fax"><span t-field="o.partner_id.fax"/></span></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div><br/>                    
+                        <table width="100%">
+			                <thead>
+			                    <tr>
+			                        <th width="10%" class="text-center main_border">ITEM</th>
+			                        <th width="20%" class="text-center main_border">PRODUCT</th>
+			                        <th width="30%" class="text-center main_border">DESCRIPTION</th>
+			                        <th width="10%" class="text-center main_border">QTY</th>
+			                        <th width="15%" class="text-center main_border">UNIT PRICE</th>
+			                        <th width="15%" class="text-center main_border">TOTAL PRICE</th>
+			                    </tr>
+			                </thead>
+                            <tbody class="main_border txt" height="300px">
+                                <tr><td class="l_border"/><td class="l_border"/><td class="l_border"/><td class="l_border"/>
+                                    <td class="text-center l_border"><b>USD</b></td>
+                                    <td class="text-center l_border"><b>USD</b></td>
+                                </tr>
+                                <tr t-foreach="o.invoice_line" t-as="l">
+                                    <td class="text-center l_border">
+                                        <span t-esc="get_index()"/>
+                                    </td>
+                                    <td class="text-left l_border">
+                                        <span t-field="l.product_id"/>
+                                    </td>
+                                    <td class="text-left l_border">
+                                        <span t-field="l.name"/>
+                                    </td>
+                                    <td class="text-center l_border">
+                                        <span t-esc="get_qty_format(o)"/>
+                                    </td>
+                                    <td class="text-center l_border">
+                                        <span t-field="l.price_unit"/>
+                                    </td>
+                                    <td class="text-center l_border">
+                                        <span t-field="l.price_subtotal"/>
+                                    </td>
+                                </tr>
+                                 <tr>
+			                        <td width="10%" class="l_border"/>
+			                        <td width="20%" class="l_border"/>
+			                        <td width="30%" class="l_border txt">
+			                            <br/><br/><br/><br/><u>F.O.C Items :</u>
+			                            <t t-if="o.f_o_c">
+			                                <p t-field="o.f_o_c"/><br/><br/>
+			                            </t>
+			                        </td>
+			                        <td width="10%" class="l_border"/>
+			                        <td width="15%" class="l_border"/>			                    
+			                        <td width="15%" class="l_border"/>			                    
+			                    </tr>
+			                    <tr>
+			                        <td width="10%" class="l_border"/>
+			                        <td width="20%" class="l_border"/>
+			                        <td width="30%" class="l_border">
+			                            <br/><br/>EXCHANGE RATE 1.25 EQUIVALENT TO SGD
+			                            <p>TOTAL <span class="text_right" t-esc="o.amount_untaxed * 1.25"/></p>
+			                            <p>ADD GST@7% <span class="text_right" t-esc="(o.amount_untaxed * 1.25) * 0.07"/></p>
+			                            <p>AMOUNT DUE <span class="text_right" t-esc="(o.amount_untaxed * 1.25) + ((o.amount_untaxed * 1.25) * 0.07)"/></p>
+			                        </td>
+			                        <td width="10%" class="l_border"/>
+			                        <td width="15%" class="l_border"/>			                    
+			                        <td width="15%" class="l_border"/>			                    
+			                    </tr>
+                            </tbody>
+			            </table>
+			            <table width="100%">
+			                <tr>
+			                    <td width="70%" class="text-left">E&amp;OE</td>
+			                    <td width="15%" class="text-right txt"><strong>TOTAL</strong></td>
+			                    <td width="15%" class="text-center main_border1 txt"><span t-field="o.amount_untaxed"/></td>
+			                </tr>
+			            </table>
+			            <table width="100%">
+			                <tr>
+			                    <td width="70%" class="text-left">Kindly quote our invoice number when making payment to us. Please adhere to our credit</td>
+			                    <td width="15%" class="text-right txt"><strong>ADD GST</strong></td>
+			                    <td width="15%" class="text-center main_border1 txt"><span t-field="o.amount_tax"/></td>
+			                </tr>
+			            </table>
+			            <table width="100%">
+			                <tr>
+			                    <td width="65%" class="text-left">terms and conditions.</td>
+			                    <td width="20%" class="text-right txt"><strong>AMOUNT DUE</strong></td>
+			                    <td width="15%" class="text-center main_border1 txt"><span t-field="o.amount_total"/></td>
+			                </tr>
+			            </table>
+                        <table width="100%">
+			                <tr>
+			                    <td class="text-left">Interest rate of 1.5% per month will be charges on all overdue accounts.</td>
+			                </tr>
+			                <tr>
+			                    <td class="text-left">All cheque to be crossed "A/C Payee Only, Not Negotiable".</td>
+			                </tr>
+			            </table>
+			            <br/><br/><br/><br/><br/><br/><br/><br/>
+			            <table width="100%">
+                            <tr>
+                                <td style="border-top: 1px solid black;" width="40%" class="text-center">Benzzoni Pte Ltd</td>
+                                <td width="20%"></td>
+                                <td style="border-top: 1px solid black;" width="40%" class="text-center">Receipt Signature &amp; Company Stamp</td>
+                            </tr>
+                        </table>
+                    </div>
+			    </t>
+		    </t>
+        </t>
+	</template>
+</data>
+</openerp>
+

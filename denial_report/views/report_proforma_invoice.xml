@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <template id="report_proforma_invoice">
+        <t t-call="report.html_container">
+		    <t t-call="report.custom_external_layout1">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <table class="txt">
+                                    <tr width="100%">
+                                        <td width="40%" class="text-right">Buyer Name</td>
+                                        <td width="10%"></td>
+                                        <td width="50%" class="text-left"><span t-if="o.partner_id.name"><span t-field="o.partner_id.name"/></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" class="text-right">Company Name </td>
+                                        <td width="10%"></td>
+                                        <td width="50%" class="text-left"><span t-if="o.company_id"><span t-field="o.company_id.name"/></span></td>
+                                    </tr>                    
+                                    <tr>
+                                        <td width="40%" class="text-right">Address</td>
+                                        <td width="10%"></td>
+                                        <td width="50%" class="text-left">
+                                            <p><span t-if="o.partner_id.street"><span t-field="o.partner_id.street"/></span></p>
+                                            <p><span t-if="o.partner_id.street2"><span t-field="o.partner_id.street2"/></span></p>
+                                            <p><span t-if="o.partner_id.city"><span t-field="o.partner_id.city"/></span> 
+                                               <span t-if="o.partner_id.zip"><span t-field="o.partner_id.zip"/></span></p>
+                                            <p><span t-if="o.partner_id.country_id"><span t-field="o.partner_id.country_id.name"/></span></p> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%" class="text-right">Telephone / Fax</td>
+                                        <td width="10%"></td>
+                                        <td width="40%" class="text-left"><span t-if="o.partner_id.phone"><span t-field="o.partner_id.phone"/></span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-xs-6">
+                                <table width="100%" class="txt">
+                                    <tr width="100%">
+                                        <td width="45%" class="text-right"><b>Proforma Invoice No.</b></td>
+                                        <td width="10%"></td>
+                                        <td width="45%" class="text-left"><b><span t-field="o.number"/></b></td>
+                                    </tr>
+                                    <tr width="100%">
+                                        <td width="45%" class="text-right">Purchase Order No</td>
+                                        <td width="10%"></td>
+                                        <td width="45%" class="text-left"><span t-field="o.origin"/></td>
+                                    </tr>                    
+                                    <tr width="100%">
+                                        <td width="45%" class="text-right">Date</td>
+                                        <td width="10%"></td>
+                                        <td width="45%" class="text-left"><span t-esc="get_date(o.date_invoice)"/></td>
+                                    </tr>
+                                    <tr width="100%">
+                                        <td width="45%" class="text-right">Shipping Term</td>
+                                        <td width="10%"></td>
+                                        <td width="45%" class="text-left"><b><span t-field="o.shipping_term"/></b></td>
+                                    </tr>
+                                    <tr width="100%">
+                                        <td width="45%" class="text-right">Credit Term</td>
+                                        <td width="10%"></td>
+                                        <td width="45%" class="text-left"><b><span t-field="o.credit_term"/></b></td>
+                                    </tr>
+                                    <tr width="100%">
+                                        <td width="40%" class="text-right">Validity Term</td>
+                                        <td width="10%"></td>
+                                        <td width="50%" class="text-left"><span t-field="o.validity_term"/></td>
+                                    </tr>
+                                    <tr width="100%">
+                                        <td width="40%" class="text-right">Page</td>
+                                        <td width="10%"></td>
+                                        <td width="50%" class="text-left"><!--span class="page"/>of<span class="topage"/--></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div><br/>                        
+                        <table width="100%" class="txt">
+		                    <thead>
+		                        <tr>
+		                            <th width="15%" class="text-center main_border">ILLUSTRATION</th>
+		                            <th width="40%" class="text-center main_border">DESCRIPTION</th>
+		                            <th width="15%" class="text-center main_border">1x40' HQ QTY</th>
+		                            <th width="15%" class="text-center main_border">UNIT PRICE</th>
+		                            <th width="15%" class="text-center main_border">TOTAL VALUE</th>
+		                        </tr>
+		                    </thead>
+                            <tbody class="invoice_tbody">
+                                <tr t-foreach="o.invoice_line" t-as="l">
+                                    <td class="main_border1">
+                                        <t t-if="l.product_id.image_medium">
+                                            <img t-if="l.product_id" t-att-src="'data:image/png;base64,%s' % l.product_id.image_medium" style="max-height: 200px;" />
+                                        </t>
+                                    </td>
+                                    <td class="main_border1">
+                                        <p><b>Code </b><span t-field="l.product_id.default_code"/><br/></p>
+                                        <p>Description: <span t-field="l.name"/><br/></p>
+                                        <p>Chair Base: <span t-field="l.product_id.chair_base"/></p>
+                                        <p>Mechanism: <span t-field="l.product_id.mechanism"/></p>
+                                        <p>Armrest: <span t-field="l.product_id.armrest"/></p>
+                                        <p>Castor: <span t-field="l.product_id.castor"/></p>
+                                        <p>Seat Cushion: <span t-field="l.product_id.seat_cushion"/></p>
+                                        <p>Upholstery: <b><span t-field="l.product_id.upholstery"/></b></p>
+                                    </td>
+                                    <td class="text-center main_border1">
+                                        <span t-esc="get_qty_format(o)"/>
+                                    </td>
+                                    <td class="text-center main_border1">
+                                        USD  <span t-field="l.price_unit"/>
+                                    </td>
+                                    <td class="text-center main_border1">
+                                        USD  <span t-field="l.price_subtotal"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+		                </table>
+                        <table width="100%" class="txt">
+                            <tr>
+                                <td width="70%"></td>
+                                <td width="15%" class="text-right"><strong>Total</strong></td>
+                                <td width="15%" class="text-center main_border1">
+                                     <span t-field="o.amount_total"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/><br/><br/><br/><br/><br/><br/><br/>
+                        <table width="100%">
+                            <tr>
+                                <td style="border-top: 1px solid black;" width="40%" class="text-center">Benzzoni Pte Ltd</td>
+                                <td width="20%"></td>
+                                <td style="border-top: 1px solid black;" width="40%" class="text-center">Receipt Signature &amp; Company Stamp</td>
+                            </tr>
+                        </table>
+                    </div>
+			    </t>
+		    </t>
+        </t>
+	</template>
+</data>
+</openerp>
+

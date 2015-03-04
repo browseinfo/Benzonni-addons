@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="account_invoice_form_view_extended" model="ir.ui.view">
+			<field name="name">account.invoice.form.view.extended</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form"/>
+				<field name="arch" type="xml">
+					<xpath expr="//page[@string='Other Info']//field[@name='move_id']" position="after">
+							<field name="shipping_term"/>
+							<field name="credit_term"/>
+							<field name="validity_term"/>
+					</xpath>
+					<xpath expr="//page[@string='Invoice Lines']//field[@name='comment']" position="after">
+							<div>
+								<label for="f_o_c"/>
+							</div>
+							<field name="f_o_c" class="oe_inline" placeholder="F.O.C. Items..." nolabel="1"/>
+					</xpath>
+				</field>
+		</record>
+		
+		<record id="product_view_column_extra" model="ir.ui.view">
+			<field name="name">product.view.column.extra</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_form_view"/>
+				<field name="arch" type="xml">
+					<xpath expr="//notebook/page[@string='Information']//field[@name='list_price']" position="after">
+					    <field name="chair_base"></field>
+						<field name="mechanism"></field>
+						<field name="armrest"></field>
+					</xpath>
+					<xpath expr="//notebook/page[@string='Information']//field[@name='active']" position="after">
+						<field name="castor"></field>
+						<field name="seat_cushion"></field>
+						<field name="upholstery"></field>
+					</xpath>
+				</field>
+		</record>
+
+	</data>
+</openerp>
